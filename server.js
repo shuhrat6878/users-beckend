@@ -10,18 +10,20 @@ const router = jsonServer.router("db.json");
 const middlewares = jsonServer.defaults();
 
 server.use(middlewares);
+server.use(express.json());
+
+// sekin ishlatish uchun delay (ixtiyoriy)
 server.use((req, res, next) => {
-  setTimeout(next, 500); // Slow latency
+  setTimeout(next, 500);
 });
 
-setTimeout(() => {
-  server.use(router);
-}, 500);
+// JSON-server router NI DARHOL ULASH SHART
+server.use(router);
 
+// EXPRESS ga JSON-serverni bog‘lash
 app.use(server);
 
 const PORT = process.env.PORT || 3600;
-
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log("Server is running on PORT:", PORT);
 });
